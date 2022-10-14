@@ -4,9 +4,9 @@ import { nanoid } from 'nanoid';
 async function postURL(req, res){
     const string = req.body;
     const shortURL = nanoid();
+    const id = res.locals.user;
     try {
-        const encurtUrl = await connection.query('INSERT INTO links (shortUrl, url) VALUES ($1,$2);',[shortURL, string])
-        console.log(string)
+        const encurtUrl = await connection.query('INSERT INTO links (shortUrl, url, userId) VALUES ($1,$2,$3);',[shortURL, string, id]);
         return res.send(shortURL);
     } catch (error) {
        return res.status(422).send("Invalid URL");
@@ -28,5 +28,38 @@ async function getUrl(req, res){
     
 }
 
+async function redirect(req, res){
+    const { shortUrl } = req.params;
 
-export {postURL, getUrl}
+    try {
+        const UrlExist = await connection.query('SELECT * FROM links WHERE shorturl=$1;',[shortUrl])
+        if(!UrlExist.rows[0]){return res.sendStatus(404)};
+      
+        const linkId = UrlExist.rows[0].id;
+        const visits = UrlExist.rows[0].visits + 1;
+        const newVistit = connection.query('UPDATE links SET visits=$1 WHERE id=$2;',[visits,linkId])
+        res.redirect(200, UrlExist.rows[0].url)
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
+async function deleteUrl(req,res){
+    const { id } = req.params;
+    const idUser = res.locals.user;
+
+    try {
+        const UrlExist = await connection.query('SELECT * FROM links WHERE links.id=$1;',[id]);
+        if(!UrlExist.rows[0]){return res.sendStatus(404)};
+        if(idUser != UrlExist.rows[0].userid){
+            return res.sendStatus(401)
+        }
+        const deleteU = await connection.query('DELETE FROM links WHERE id=$1;',[id]);
+        return res.status(204).send(UrlExist.rows[0])
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
+
+export {postURL, getUrl, redirect, deleteUrl}

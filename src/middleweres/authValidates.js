@@ -37,7 +37,7 @@ async function authMiddleware(req, res, next) {
     const session = await connection.query('SELECT * FROM sessions WHERE token=$1;',[token])
 
     if(!session.rows[0]){return res.sendStatus(401)}
-
+    res.locals.user = session.rows[0].id
     next();
 }
 
