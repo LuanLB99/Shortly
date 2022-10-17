@@ -14,7 +14,6 @@ async function postURL(req, res){
       '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
     return !!urlPattern.test(urlString);
   }
-console.log(url)
   if(!isValidUrl(url)){return res.sendStatus(422)}
 
     try {
