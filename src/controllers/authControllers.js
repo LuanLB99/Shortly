@@ -24,7 +24,8 @@ async function signUp(req,res){
 
 async function signIn(req, res){
     const {email, password} = res.locals.user;
-    const userExist = await connection.query('SELECT * FROM users WHERE email=$1',[email])
+    try {
+        const userExist = await connection.query('SELECT * FROM users WHERE email=$1',[email])
     if(userExist.rows.length === 0){return res.sendStatus(401)}
     if(!bcrypt.compareSync(password,userExist.rows[0].password)){
         return res.sendStatus(401);
@@ -33,6 +34,11 @@ async function signIn(req, res){
     const session = await connection.query('INSERT INTO sessions (userId, token) VALUES ($1,$2);',[userExist.rows[0].id,token.token])
 
     return res.status(200).send({token});
+        
+    } catch (error) {
+        return res.status(422).send(error.message); 
+    }
+    
 }
 
 
