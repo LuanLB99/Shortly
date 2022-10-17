@@ -12,8 +12,4 @@ const loginSchema = joi.object({
     password:joi.string().required().empty('').min(3)
 })
 
-//const urlSchema = joi.object({
- //   url:joi.string().required().regex()
-//})
-
 export { registrationSchema, loginSchema }

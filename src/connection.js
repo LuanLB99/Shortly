@@ -9,7 +9,7 @@ const connection = new Pool({
     password:'benilda12',
     host:'localhost',
     port:5432,
-    database:'postgres'
+    database:'shortly'
 })
 
 export default connection;

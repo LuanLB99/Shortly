@@ -2,22 +2,32 @@ import connection from "../connection.js";
 import { nanoid } from 'nanoid';
 
 async function postURL(req, res){
-    const string = req.body;
+    const { url } = req.body;
     const shortURL = nanoid();
     const id = res.locals.user;
+    const isValidUrl = urlString=> {
+        var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
+      '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+    return !!urlPattern.test(urlString);
+  }
+console.log(url)
+  if(!isValidUrl(url)){return res.sendStatus(422)}
+
     try {
-        const encurtUrl = await connection.query('INSERT INTO links (shortUrl, url, userId) VALUES ($1,$2,$3);',[shortURL, string, id]);
+        const encurtUrl = await connection.query('INSERT INTO links (shortUrl, url, userid) VALUES ($1,$2,$3);',[shortURL, url, id]);
         return res.send(shortURL);
     } catch (error) {
-       return res.status(422).send("Invalid URL");
+       return res.status(422).send(error.message);
     }
 
-    res.send('tudo ok!');
 }
 
 async function getUrl(req, res){
     const { id } = req.params;
-
     try {
         const url = await connection.query('SELECT * FROM links WHERE id=$1;',[id])
         if(!url.rows[0]){return res.sendStatus(404)}

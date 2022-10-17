@@ -11,17 +11,15 @@ async function getMyLinks(req,res){
             visitCount:MyUrls.rows[0].visitCount,
             shortenedUrls:[shortened.rows]
         }
-        console.log(result)
         return res.status(201).send(result)
     } catch (error) {
         return res.status(500).send(error.message)
     }
-    res.sendStatus(201);
 }
 
 async function getRanking(req, res){
     try {
-        const ranking = await connection.query('SELECT u.id, u.name, COUNT(l.*) as "linksCount", SUM(l.visits) as "visitCount" FROM links l JOIN users u ON l.userid=u.id GROUP BY u.name, u.id ORDER BY "visitCount" DESC;');
+        const ranking = await connection.query('SELECT u.id, u.name, COALESCE(COUNT(l.*),0) as "linksCount", COALESCE(SUM(l.visits),0) as "visitCount" FROM links l RIGHT JOIN users u ON l.userid=u.id GROUP BY u.name, u.id ORDER BY "visitCount" DESC LIMIT 10;');
         return res.send(ranking.rows)
     } catch (error) {
         return res.status(500).send(error.message)
