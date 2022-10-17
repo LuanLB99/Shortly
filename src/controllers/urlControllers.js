@@ -18,7 +18,7 @@ async function postURL(req, res){
 
     try {
         const encurtUrl = await connection.query('INSERT INTO links (shortUrl, url, userid) VALUES ($1,$2,$3);',[shortURL, url, id]);
-        return res.send(shortURL);
+        return res.send({shortUrl:shortURL});
     } catch (error) {
        return res.status(422).send(error.message);
     }
