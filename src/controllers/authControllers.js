@@ -33,7 +33,7 @@ async function signIn(req, res){
     const token = {token:uuid()};
     const session = await connection.query('INSERT INTO sessions (userId, token) VALUES ($1,$2);',[userExist.rows[0].id,token.token])
 
-    return res.status(200).send({token});
+    return res.status(200).send(token);
         
     } catch (error) {
         return res.status(422).send(error.message); 
