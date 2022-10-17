@@ -144,6 +144,8 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 INSERT INTO public.links VALUES (7, '_mgC8eGzXcZLWKZCzYds9', '{"url":"https://www.evernote.com/client/web?login=true#?n=7c4357e2-cd93-e3cd-78a9-68aec95703f4&"}', 3, 2, '2022-10-16 20:48:36.824179');
+INSERT INTO public.links VALUES (8, 'vWGCsgk1OSkSLQ3LJHcP1', '{"url":"ola mundo!"}', 0, 4, '2022-10-17 14:08:28.984241');
+INSERT INTO public.links VALUES (9, '-AcqXlpmn3kSCj3dHadFa', 'https://stackabuse.com/validate-email-addresses-with-regular-expressions-in-javascript/', 0, 4, '2022-10-17 14:13:55.867345');
 
 
 --
@@ -151,6 +153,7 @@ INSERT INTO public.links VALUES (7, '_mgC8eGzXcZLWKZCzYds9', '{"url":"https://ww
 --
 
 INSERT INTO public.sessions VALUES (1, 2, 'e0b22c43-86ed-468a-92fd-d001fd6a2387', '2022-10-16 20:26:27.234147');
+INSERT INTO public.sessions VALUES (2, 4, '5683c9ee-fbb3-4a97-a9b9-91ec9ffc178c', '2022-10-17 14:00:45.641473');
 
 
 --
@@ -158,27 +161,29 @@ INSERT INTO public.sessions VALUES (1, 2, 'e0b22c43-86ed-468a-92fd-d001fd6a2387'
 --
 
 INSERT INTO public.users VALUES (2, 'abacate123@gmail.com', 'vovó juju', '$2b$12$8tYi3Fv0ypQZuJwf0H.BF.xl4YtTaBzj.ftGwWgOsCpirl8l7sLky');
+INSERT INTO public.users VALUES (3, 'luanleaboni@gmail.com', 'Luan Leal', '$2b$12$G8tlgo2CzI6wnyMF1O.VQu8OQfZkoc2wmMsfUZpgE0X/fYZV2M7B6');
+INSERT INTO public.users VALUES (4, 'luanlealboni@gmail.com', 'luan leal', '$2b$12$1eJXRLnrlIaaKQAmRIn1hOM9tyzocllbOETp4eeuL3eXN3PR.sQDW');
 
 
 --
 -- Name: links_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.links_id_seq', 7, true);
+SELECT pg_catalog.setval('public.links_id_seq', 9, true);
 
 
 --
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 1, true);
+SELECT pg_catalog.setval('public.sessions_id_seq', 2, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 2, true);
+SELECT pg_catalog.setval('public.users_id_seq', 4, true);
 
 
 --
